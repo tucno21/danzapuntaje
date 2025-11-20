@@ -132,19 +132,19 @@ const FormularioDanza: React.FC = () => {
     const gruposOptions = config.grupos.map(g => g.nombre);
 
     return (
-        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-            <div className="flex items-center gap-3 mb-6">
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-4">
+            <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-green-100 rounded-lg">
                     <Plus className="w-5 h-5 text-green-600" />
                 </div>
                 <h2 className="text-xl font-bold text-gray-900">Registrar Nueva Danza</h2>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Fila principal: Nombre, Grado, Grupo */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                     {/* Nombre de la danza */}
-                    <div className="relative">
+                    <div className="md:col-span-2">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                             Nombre de la Danza <span className="text-red-500">*</span>
                         </label>
@@ -153,7 +153,7 @@ const FormularioDanza: React.FC = () => {
                             value={formData.nombre}
                             onChange={(e) => handleInputChange('nombre', e.target.value)}
                             placeholder="Ej: Danza Contemporánea"
-                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-lg ${errors.nombre ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                            className={`w-full px-4 py-3 border rounded-lg transition-colors text-lg ${errors.nombre ? 'border-red-500 bg-red-50' : 'border-gray-300'
                                 }`}
                             disabled={isSubmitting}
                         />
@@ -166,14 +166,14 @@ const FormularioDanza: React.FC = () => {
                     </div>
 
                     {/* Grado y Sección */}
-                    <div className="relative">
+                    <div className="md:col-span-1">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                             Grado y Sección <span className="text-red-500">*</span>
                         </label>
                         <select
                             value={formData.gradoSeccion}
                             onChange={(e) => handleInputChange('gradoSeccion', e.target.value)}
-                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-lg ${errors.gradoSeccion ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                            className={`w-full px-4 py-3 border rounded-lg transition-colors text-lg ${errors.gradoSeccion ? 'border-red-500 bg-red-50' : 'border-gray-300'
                                 }`}
                             disabled={isSubmitting}
                         >
@@ -199,14 +199,14 @@ const FormularioDanza: React.FC = () => {
                     </div>
 
                     {/* Grupo */}
-                    <div className="relative">
+                    <div className="md:col-span-1">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                             Grupo <span className="text-red-500">*</span>
                         </label>
                         <select
                             value={formData.grupo}
                             onChange={(e) => handleInputChange('grupo', e.target.value)}
-                            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-lg ${errors.grupo ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                            className={`w-full px-4 py-3 border rounded-lg transition-colors text-lg ${errors.grupo ? 'border-red-500 bg-red-50' : 'border-gray-300'
                                 }`}
                             disabled={isSubmitting}
                         >
@@ -248,7 +248,7 @@ const FormularioDanza: React.FC = () => {
                                     min={config.escalaPuntaje.min}
                                     max={config.escalaPuntaje.max}
                                     step="0.1"
-                                    className={`w-full px-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-lg text-center font-bold ${errors.puntajes ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                                    className={`w-full px-3 py-3 border rounded-lg transition-colors text-lg text-center font-bold ${errors.puntajes ? 'border-red-500 bg-red-50' : 'border-gray-300'
                                         } ${puntaje && !isNaN(parseFloat(puntaje)) ? 'bg-green-50' : ''}`}
                                     disabled={isSubmitting}
                                 />
@@ -269,7 +269,7 @@ const FormularioDanza: React.FC = () => {
                 </div>
 
                 {/* Total calculado */}
-                <div className="bg-linear-to-r from-blue-50 to-purple-50 rounded-lg p-4 border border-blue-200">
+                <div className="bg-linear-to-r from-blue-50 to-purple-50 rounded-lg px-5 py-2 border border-blue-200">
                     <div className="flex items-center justify-between">
                         <div>
                             <label className="text-sm font-medium text-gray-700">Total Calculado</label>

@@ -188,7 +188,7 @@ const ConfigJurados: React.FC = () => {
                                         <select
                                             value={config.cantidadJurados}
                                             onChange={(e) => updateCantidadJurados(Number(e.target.value))}
-                                            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="px-4 py-2 border border-gray-300 rounded-lg"
                                         >
                                             {[2, 3, 4, 5].map(num => (
                                                 <option key={num} value={num}>{num} Jurados</option>
@@ -207,7 +207,7 @@ const ConfigJurados: React.FC = () => {
                                                         value={jurado.nombre || ''}
                                                         onChange={(e) => updateNombreJurado(jurado.id, e.target.value)}
                                                         placeholder="Nombre del jurado"
-                                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
                                                     />
                                                 </div>
                                             ))}
@@ -227,7 +227,7 @@ const ConfigJurados: React.FC = () => {
                                                 type="number"
                                                 value={config.escalaPuntaje.min}
                                                 onChange={(e) => setEscalaMin(Number(e.target.value))}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                                             />
                                         </div>
                                         <div>
@@ -236,7 +236,7 @@ const ConfigJurados: React.FC = () => {
                                                 type="number"
                                                 value={config.escalaPuntaje.max}
                                                 onChange={(e) => setEscalaMax(Number(e.target.value))}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                                             />
                                         </div>
                                     </div>
@@ -267,7 +267,7 @@ const ConfigJurados: React.FC = () => {
                                             value={newGradoName}
                                             onChange={(e) => setNewGradoName(e.target.value)}
                                             placeholder="Ej: 4° A"
-                                            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
                                             onKeyPress={(e) => e.key === 'Enter' && handleAddGrado()}
                                         />
                                         <button
@@ -287,7 +287,7 @@ const ConfigJurados: React.FC = () => {
                                                         id={`grado-${grado.id}`}
                                                         type="text"
                                                         defaultValue={grado.nombre}
-                                                        className="flex-1 px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                                                        className="flex-1 px-2 py-1 border border-gray-300 rounded"
                                                         onKeyPress={(e) => {
                                                             if (e.key === 'Enter') {
                                                                 handleUpdateGrado(grado.id);
@@ -349,7 +349,7 @@ const ConfigJurados: React.FC = () => {
                                             value={newGrupoName}
                                             onChange={(e) => setNewGrupoName(e.target.value)}
                                             placeholder="Ej: Grupo 4"
-                                            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
                                             onKeyPress={(e) => e.key === 'Enter' && handleAddGrupo()}
                                         />
                                         <button
@@ -369,7 +369,7 @@ const ConfigJurados: React.FC = () => {
                                                         id={`grupo-${grupo.id}`}
                                                         type="text"
                                                         defaultValue={grupo.nombre}
-                                                        className="flex-1 px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                                                        className="flex-1 px-2 py-1 border border-gray-300 rounded"
                                                         onKeyPress={(e) => {
                                                             if (e.key === 'Enter') {
                                                                 handleUpdateGrupo(grupo.id);
