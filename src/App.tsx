@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Trophy, Users, Menu, X } from 'lucide-react';
+import { Trophy, Users, Menu, X, Maximize2, Minimize2 } from 'lucide-react';
 import { useDanzasStore } from './store/danzasStore';
 import { getGruposUnicos, obtenerEstadisticas } from './utils/calculations';
 
@@ -17,6 +17,35 @@ const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'general' | 'grupos'>('general');
   const [selectedGrupo, setSelectedGrupo] = useState<string>('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().then(() => {
+        setIsFullscreen(true);
+      }).catch((err) => {
+        console.error('Error attempting to enable fullscreen:', err);
+      });
+    } else {
+      document.exitFullscreen().then(() => {
+        setIsFullscreen(false);
+      }).catch((err) => {
+        console.error('Error attempting to exit fullscreen:', err);
+      });
+    }
+  };
+
+  // Escuchar cambios en el estado de fullscreen
+  React.useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
 
   const rankingGeneral = getRankingGeneral();
   const rankingPorGrupos = getRankingPorGrupos();
@@ -140,8 +169,20 @@ const App: React.FC = () => {
               </button>
             </nav>
 
-            {/* Configuración y menú móvil */}
+            {/* Pantalla completa y configuración */}
             <div className="flex items-center gap-3">
+              <button
+                onClick={toggleFullscreen}
+                className="hidden sm:flex items-center gap-2 px-3 py-2 bg-white rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-all duration-200 hover:scale-105"
+                title={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
+              >
+                {isFullscreen ? (
+                  <Minimize2 className="w-4 h-4 text-gray-600" />
+                ) : (
+                  <Maximize2 className="w-4 h-4 text-gray-600" />
+                )}
+              </button>
+
               <ConfigJurados />
 
               <button

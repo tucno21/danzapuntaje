@@ -153,7 +153,7 @@ export const exportRankingToPDF = async (ranking: RankingItem[], config: Config,
 
     // Encabezados de tabla
     const headers = ['Pos', 'Nombre', 'Grado', 'Grupo'];
-    config.jurados.forEach((jurado, i) => {
+    config.jurados.forEach((_jurado, i) => {
         headers.push(`J${i + 1}`);
     });
     headers.push('Total');
@@ -164,7 +164,7 @@ export const exportRankingToPDF = async (ranking: RankingItem[], config: Config,
     // Dibujar encabezados
     pdf.setFontSize(10);
     pdf.setFont('helvetica', 'bold');
-    headers.forEach((header, index) => {
+    headers.forEach((header, _index) => {
         pdf.text(header, xPosition + 2, yPosition);
         pdf.rect(xPosition, yPosition - 5, columnWidth - 2, 10);
         xPosition += columnWidth;
@@ -173,7 +173,7 @@ export const exportRankingToPDF = async (ranking: RankingItem[], config: Config,
 
     // Datos de la tabla
     pdf.setFont('helvetica', 'normal');
-    ranking.forEach((item, index) => {
+    ranking.forEach((item, _index) => {
         if (yPosition > pageHeight - 20) {
             pdf.addPage();
             yPosition = 20;

@@ -6,7 +6,7 @@ import {
     exportToCSV,
     exportToJSON,
     exportRankingToPDF,
-    importFromJSON
+    // importFromJSON
 } from '../utils/exportData';
 import ConfirmDialog from './ConfirmDialog';
 
@@ -107,7 +107,7 @@ const ExportButtons: React.FC = () => {
 
         setIsExporting('import');
         try {
-            const data = await importFromJSON(file);
+            // const data = await importFromJSON(file);
 
             // Aquí deberías implementar la lógica para importar los datos
             // Por ahora solo mostramos un mensaje
