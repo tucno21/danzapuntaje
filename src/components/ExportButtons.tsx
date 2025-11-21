@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, FileSpreadsheet, FileText, FileJson, Printer, Upload, Trash2 } from 'lucide-react';
+import { Download, FileSpreadsheet, FileText, FileJson, Printer, Upload, Trash2, AlertTriangle } from 'lucide-react';
 import { useDanzasStore } from '../store/danzasStore';
 import {
     exportToExcel,
@@ -11,7 +11,7 @@ import {
 import ConfirmDialog from './ConfirmDialog';
 
 const ExportButtons: React.FC = () => {
-    const { danzas, config, getRankingGeneral, clearAllDanzas, addToast } = useDanzasStore();
+    const { danzas, config, getRankingGeneral, clearAllDanzas, resetAllData, addToast } = useDanzasStore();
     const [isExporting, setIsExporting] = useState<string | null>(null);
     const [confirmDialog, setConfirmDialog] = useState<{
         isOpen: boolean;
@@ -145,6 +145,16 @@ const ExportButtons: React.FC = () => {
         });
     };
 
+    const handleResetAllData = () => {
+        setConfirmDialog({
+            isOpen: true,
+            type: 'danger',
+            title: 'Reiniciar Toda la Base de Datos',
+            message: `¿Está seguro de reiniciar toda la base de datos? Esta acción eliminará permanentemente: todas las danzas registradas, la configuración de jurados, grados, grupos, nombres predefinidos y ajustes de escala. Esta acción NO se puede deshacer.`,
+            onConfirm: resetAllData
+        });
+    };
+
     if (danzas.length === 0) {
         return (
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
@@ -273,7 +283,7 @@ const ExportButtons: React.FC = () => {
 
             {/* Importar y Limpiar */}
             <div className="border-t border-gray-200 pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {/* Importar JSON */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -304,7 +314,7 @@ const ExportButtons: React.FC = () => {
                         </p>
                     </div>
 
-                    {/* Limpiar todo */}
+                    {/* Eliminar danzas */}
                     <div>
                         <button
                             onClick={handleClearAll}
@@ -315,7 +325,22 @@ const ExportButtons: React.FC = () => {
                             Eliminar Todas las Danzas
                         </button>
                         <p className="text-xs text-gray-500 mt-2">
-                            Elimina permanentemente todos los datos
+                            Elimina solo las danzas registradas
+                        </p>
+                    </div>
+
+                    {/* Reiniciar toda la base de datos */}
+                    <div>
+                        <button
+                            onClick={handleResetAllData}
+                            disabled={isExporting !== null}
+                            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium border border-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            <AlertTriangle className="w-5 h-5" />
+                            Reiniciar Toda la Base de Datos
+                        </button>
+                        <p className="text-xs text-gray-500 mt-2">
+                            Elimina TODOS los datos y configuración
                         </p>
                     </div>
                 </div>

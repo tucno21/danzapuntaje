@@ -37,6 +37,9 @@ interface DanzasState {
     deleteDanza: (id: string) => void;
     clearAllDanzas: () => void;
 
+    // Resetear toda la base de datos
+    resetAllData: () => void;
+
     // Acciones de UI
     addToast: (toast: Omit<ToastMessage, 'id'>) => void;
     removeToast: (id: string) => void;
@@ -479,6 +482,20 @@ export const useDanzasStore = create<DanzasState>()(
                     get().addToast({
                         type: 'warning',
                         message: 'Todas las danzas han sido eliminadas'
+                    });
+                },
+
+                resetAllData: () => {
+                    set({
+                        config: initialConfig,
+                        danzas: [],
+                        ultimaDanza: null,
+                        toasts: []
+                    });
+
+                    get().addToast({
+                        type: 'info',
+                        message: 'Toda la base de datos ha sido reiniciada'
                     });
                 },
 
