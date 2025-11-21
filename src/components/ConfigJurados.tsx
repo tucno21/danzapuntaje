@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
-import { Settings, Plus, Edit2, Trash2, X, Save, User, Sliders, List, Users } from 'lucide-react';
+import { Settings, Plus, Edit2, Trash2, X, Save, User, Sliders, List, Users, Music } from 'lucide-react';
 import { useDanzasStore } from '../store/danzasStore';
 import ConfirmDialog from './ConfirmDialog';
 
 const ConfigJurados: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState<'jurados' | 'escala' | 'grados' | 'grupos'>('jurados');
+    const [activeTab, setActiveTab] = useState<'jurados' | 'escala' | 'grados' | 'grupos' | 'nombres'>('jurados');
 
     // Estados para edición
     const [editingGrado, setEditingGrado] = useState<string | null>(null);
     const [editingGrupo, setEditingGrupo] = useState<string | null>(null);
+    const [editingNombreDanza, setEditingNombreDanza] = useState<string | null>(null);
     const [newGradoName, setNewGradoName] = useState('');
     const [newGrupoName, setNewGrupoName] = useState('');
+    const [newNombreDanza, setNewNombreDanza] = useState('');
+    const [selectedGradoSeccion, setSelectedGradoSeccion] = useState('');
+    const [selectedGrupo, setSelectedGrupo] = useState('');
     const [escalaMin, setEscalaMin] = useState(0);
     const [escalaMax, setEscalaMax] = useState(100);
 
@@ -40,7 +44,10 @@ const ConfigJurados: React.FC = () => {
         deleteGradoSeccion,
         addGrupo,
         updateGrupo,
-        deleteGrupo
+        deleteGrupo,
+        addNombreDanza,
+        updateNombreDanza,
+        deleteNombreDanza
     } = useDanzasStore();
 
     const handleSaveEscala = () => {
@@ -102,6 +109,35 @@ const ConfigJurados: React.FC = () => {
             title: 'Eliminar Grupo',
             message: `¿Está seguro de eliminar "${nombre}"? Esta acción no se puede deshacer.`,
             onConfirm: () => deleteGrupo(id)
+        });
+    };
+
+    const handleAddNombreDanza = () => {
+        if (newNombreDanza.trim() && selectedGradoSeccion && selectedGrupo) {
+            addNombreDanza(newNombreDanza.trim(), selectedGradoSeccion, selectedGrupo);
+            setNewNombreDanza('');
+            setSelectedGradoSeccion('');
+            setSelectedGrupo('');
+        }
+    };
+
+    const handleUpdateNombreDanza = (id: string) => {
+        if (editingNombreDanza && editingNombreDanza !== id) return;
+
+        const input = document.getElementById(`nombre-danza-${id}`) as HTMLInputElement;
+        if (input && input.value.trim()) {
+            updateNombreDanza(id, { nombre: input.value.trim() });
+            setEditingNombreDanza(null);
+        }
+    };
+
+    const handleDeleteNombreDanza = (id: string, nombre: string) => {
+        setConfirmDialog({
+            isOpen: true,
+            type: 'danger',
+            title: 'Eliminar Nombre de Danza',
+            message: `¿Está seguro de eliminar "${nombre}"? Esta acción no se puede deshacer.`,
+            onConfirm: () => deleteNombreDanza(id)
         });
     };
 
@@ -175,6 +211,16 @@ const ConfigJurados: React.FC = () => {
                             >
                                 <Users className="w-4 h-4" />
                                 Grupos
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('nombres')}
+                                className={`flex items-center gap-2 px-6 py-3 font-medium transition-colors ${activeTab === 'nombres'
+                                    ? 'text-blue-600 border-b-2 border-blue-600 bg-white'
+                                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                                    }`}
+                            >
+                                <Music className="w-4 h-4" />
+                                Nombres de Danzas
                             </button>
                         </div>
 
@@ -415,6 +461,128 @@ const ConfigJurados: React.FC = () => {
                                                 </div>
                                             </div>
                                         ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Tab Nombres de Danzas */}
+                            {activeTab === 'nombres' && (
+                                <div className="space-y-6">
+                                    <h3 className="text-lg font-semibold text-gray-900">Nombres de Danzas Predefinidos</h3>
+                                    <p className="text-sm text-gray-600">
+                                        Asocia nombres de danzas con grados/secciones y grupos para facilitar el registro.
+                                    </p>
+
+                                    {/* Agregar nuevo */}
+                                    <div className="grid grid-cols-1 md:grid-cols-8 gap-3">
+                                        <input
+                                            type="text"
+                                            value={newNombreDanza}
+                                            onChange={(e) => setNewNombreDanza(e.target.value)}
+                                            placeholder="Nombre de la danza"
+                                            className="px-3 py-2 border border-gray-300 rounded-lg md:col-span-3"
+                                            onKeyPress={(e) => e.key === 'Enter' && handleAddNombreDanza()}
+                                        />
+                                        <select
+                                            value={selectedGradoSeccion}
+                                            onChange={(e) => setSelectedGradoSeccion(e.target.value)}
+                                            className="px-3 py-2 border border-gray-300 rounded-lg md:col-span-2"
+                                        >
+                                            <option value="">Seleccionar grado</option>
+                                            {config.gradosSecciones.map(grado => (
+                                                <option key={grado.id} value={grado.id}>{grado.nombre}</option>
+                                            ))}
+                                        </select>
+                                        <select
+                                            value={selectedGrupo}
+                                            onChange={(e) => setSelectedGrupo(e.target.value)}
+                                            className="px-3 py-2 border border-gray-300 rounded-lg md:col-span-2"
+                                        >
+                                            <option value="">Seleccionar grupo</option>
+                                            {config.grupos.map(grupo => (
+                                                <option key={grupo.id} value={grupo.id}>{grupo.nombre}</option>
+                                            ))}
+                                        </select>
+                                        <button
+                                            onClick={handleAddNombreDanza}
+                                            disabled={!newNombreDanza.trim() || !selectedGradoSeccion || !selectedGrupo}
+                                            className="px-4 py-2 md:col-span-1 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            <Plus className="w-4 h-4 text-center" />
+                                        </button>
+                                    </div>
+
+                                    {/* Lista de nombres de danzas */}
+                                    <div className="space-y-2">
+                                        {config.nombresDanzas.map((nombreDanza) => {
+                                            const grado = config.gradosSecciones.find(g => g.id === nombreDanza.gradoSeccionId);
+                                            const grupo = config.grupos.find(g => g.id === nombreDanza.grupoId);
+                                            return (
+                                                <div key={nombreDanza.id} className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+                                                    {editingNombreDanza === nombreDanza.id ? (
+                                                        <input
+                                                            id={`nombre-danza-${nombreDanza.id}`}
+                                                            type="text"
+                                                            defaultValue={nombreDanza.nombre}
+                                                            className="flex-1 px-2 py-1 border border-gray-300 rounded"
+                                                            onKeyPress={(e) => {
+                                                                if (e.key === 'Enter') {
+                                                                    handleUpdateNombreDanza(nombreDanza.id);
+                                                                }
+                                                            }}
+                                                            autoFocus
+                                                        />
+                                                    ) : (
+                                                        <div className="flex-1">
+                                                            <span className="font-medium">{nombreDanza.nombre}</span>
+                                                            <span className="text-sm text-gray-500 ml-2">
+                                                                ({grado?.nombre} - {grupo?.nombre})
+                                                            </span>
+                                                        </div>
+                                                    )}
+                                                    <div className="flex gap-1">
+                                                        {editingNombreDanza === nombreDanza.id ? (
+                                                            <>
+                                                                <button
+                                                                    onClick={() => handleUpdateNombreDanza(nombreDanza.id)}
+                                                                    className="p-1 text-green-600 hover:bg-green-100 rounded transition-colors"
+                                                                >
+                                                                    <Save className="w-4 h-4" />
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => setEditingNombreDanza(null)}
+                                                                    className="p-1 text-gray-600 hover:bg-gray-100 rounded transition-colors"
+                                                                >
+                                                                    <X className="w-4 h-4" />
+                                                                </button>
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <button
+                                                                    onClick={() => setEditingNombreDanza(nombreDanza.id)}
+                                                                    className="p-1 text-blue-600 hover:bg-blue-100 rounded transition-colors"
+                                                                >
+                                                                    <Edit2 className="w-4 h-4" />
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => handleDeleteNombreDanza(nombreDanza.id, nombreDanza.nombre)}
+                                                                    className="p-1 text-red-600 hover:bg-red-100 rounded transition-colors"
+                                                                >
+                                                                    <Trash2 className="w-4 h-4" />
+                                                                </button>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                        {config.nombresDanzas.length === 0 && (
+                                            <div className="text-center py-8 text-gray-500">
+                                                <Music className="w-12 h-12 mx-auto mb-2 text-gray-400" />
+                                                <p>No hay nombres de danzas predefinidos</p>
+                                                <p className="text-sm">Agrega nombres para facilitar el registro de danzas</p>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             )}

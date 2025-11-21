@@ -19,6 +19,7 @@ export interface Config {
     escalaPuntaje: { min: number; max: number };
     gradosSecciones: GradoSeccion[];
     grupos: Grupo[];
+    nombresDanzas: NombreDanza[];
 }
 
 export interface GradoSeccion {
@@ -29,6 +30,13 @@ export interface GradoSeccion {
 export interface Grupo {
     id: string;
     nombre: string; // ej: "Grupo 1", "Grupo 2"
+}
+
+export interface NombreDanza {
+    id: string;
+    nombre: string;
+    gradoSeccionId: string;
+    grupoId: string;
 }
 
 export interface RankingItem {

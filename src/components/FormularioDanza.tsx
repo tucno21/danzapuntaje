@@ -4,7 +4,7 @@ import { useDanzasStore } from '../store/danzasStore';
 import { validarPuntajes } from '../utils/calculations';
 
 const FormularioDanza: React.FC = () => {
-    const { config, addDanza, danzas } = useDanzasStore();
+    const { config, addDanza, danzas, getNombresDanzasPorGradoSeccion } = useDanzasStore();
 
     const [formData, setFormData] = useState({
         nombre: '',
@@ -131,6 +131,36 @@ const FormularioDanza: React.FC = () => {
     // Opciones predefinidas para grupos
     const gruposOptions = config.grupos.map(g => g.nombre);
 
+    // Obtener nombres de danzas predefinidos para el grado seleccionado
+    const selectedGradoSeccionData = config.gradosSecciones.find(gs => gs.nombre === formData.gradoSeccion);
+    const nombresDanzasDisponibles = selectedGradoSeccionData
+        ? getNombresDanzasPorGradoSeccion(selectedGradoSeccionData.id)
+        : [];
+
+    // Autocompletar nombre y grupo cuando se selecciona un grado
+    useEffect(() => {
+        if (selectedGradoSeccionData && nombresDanzasDisponibles.length > 0) {
+            // Si solo hay una opción de danza disponible, autocompletar
+            if (nombresDanzasDisponibles.length === 1) {
+                const nombreDanza = nombresDanzasDisponibles[0];
+                const grupoData = config.grupos.find(g => g.id === nombreDanza.grupoId);
+
+                setFormData(prev => ({
+                    ...prev,
+                    nombre: nombreDanza.nombre,
+                    grupo: grupoData?.nombre || ''
+                }));
+            }
+        } else {
+            // Limpiar nombre y grupo si no hay opciones disponibles
+            setFormData(prev => ({
+                ...prev,
+                nombre: '',
+                grupo: ''
+            }));
+        }
+    }, [formData.gradoSeccion]);
+
     return (
         <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-4">
             <div className="flex items-center gap-3 mb-4">
@@ -147,6 +177,11 @@ const FormularioDanza: React.FC = () => {
                     <div className="md:col-span-2">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                             Nombre de la Danza <span className="text-red-500">*</span>
+                            {nombresDanzasDisponibles.length > 0 && (
+                                <span className="text-xs text-green-600 font-normal ml-2">
+                                    ({nombresDanzasDisponibles.length} predefinidos)
+                                </span>
+                            )}
                         </label>
                         <input
                             type="text"
