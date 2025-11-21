@@ -141,16 +141,7 @@ const ExportButtons: React.FC = () => {
             type: 'danger',
             title: 'Eliminar Todas las Danzas',
             message: `¿Está seguro de eliminar todas las ${danzas.length} danzas registradas? Esta acción no se puede deshacer y eliminará permanentemente todos los datos.`,
-            onConfirm: () => {
-                // Primera confirmación
-                setConfirmDialog({
-                    isOpen: true,
-                    type: 'danger',
-                    title: 'Confirmación Adicional',
-                    message: '¿Realmente desea continuar? Esta es una acción destructiva irreversible.',
-                    onConfirm: clearAllDanzas
-                });
-            }
+            onConfirm: clearAllDanzas
         });
     };
 
