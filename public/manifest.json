@@ -1,0 +1,68 @@
+{
+    "name": "Danza Puntaje - Sistema de Calificación",
+    "short_name": "Danza Puntaje",
+    "description": "Sistema de calificación para competencias de danza",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#3b82f6",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "lang": "es",
+    "dir": "ltr",
+    "categories": [
+        "education",
+        "productivity",
+        "utilities"
+    ],
+    "icons": [
+        {
+            "src": "/vite.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/vite.svg",
+            "sizes": "512x512",
+            "type": "image/svg+xml",
+            "form_factor": "wide",
+            "label": "Pantalla principal del sistema de calificación"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Nueva Calificación",
+            "short_name": "Calificar",
+            "description": "Agregar una nueva calificación de danza",
+            "url": "/#calificar",
+            "icons": [
+                {
+                    "src": "/vite.svg",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Ver Ranking",
+            "short_name": "Ranking",
+            "description": "Ver el ranking general de danzas",
+            "url": "/#ranking",
+            "icons": [
+                {
+                    "src": "/vite.svg",
+                    "sizes": "96x96"
+                }
+            ]
+        }
+    ],
+    "prefer_related_applications": false,
+    "edge_side_panel": {
+        "preferred_width": 400
+    },
+    "launch_handler": {
+        "client_mode": "focus-existing"
+    }
+}

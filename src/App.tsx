@@ -10,6 +10,7 @@ import FormularioDanza from './components/FormularioDanza';
 import TablaDanzas from './components/TablaDanzas';
 import ExportButtons from './components/ExportButtons';
 import ToastContainer from './components/ToastContainer';
+import NetworkStatus from './components/NetworkStatus';
 
 const App: React.FC = () => {
   const { danzas, getRankingGeneral, getRankingPorGrupos } = useDanzasStore();
@@ -323,6 +324,9 @@ const App: React.FC = () => {
 
       {/* Toast Container */}
       <ToastContainer />
+
+      {/* Network Status */}
+      <NetworkStatus />
     </div>
   );
 };
